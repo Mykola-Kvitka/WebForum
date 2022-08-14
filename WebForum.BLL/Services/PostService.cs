@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebForum.BLL.Interfaces;
 using WebForum.BLL.Models;
 using WebForum.DAL.Interfaces;
+using WebForum.DAL.Models;
 
 namespace WebForum.BLL.Services
 {
@@ -32,9 +33,11 @@ namespace WebForum.BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Post>> GetAllAsync()
+        public async Task<IEnumerable<Post>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var post = await _unitOfWork.Posts.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<PostEntity>, IEnumerable<Post>>(post);
         }
 
         public Task<Post> GetAsync(Guid id)

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebForum.PL.ViewModels.TopicViewModel>
+
+
+<div class="card text-center">
+    <div class="card-header">
+        <h3>Welcome to the FORUM!</h3>
+    </div>
+
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h5 class="card-title">Posts:</h5>
+                <div class="top-activities-bar">
+                    @foreach (var item in Model)
+                    {
+        <a href="~/topics/@item.TopicName" class="card bg-dark text-white top-activities-bar__item">
+            <img src="~/@item.ImagePath" class="card-img">
+            <div class="card-img-overlay">
+                <h5 class="card-title">@item.TopicName</h5>
+            </div>
+        </a>}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

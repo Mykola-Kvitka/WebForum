@@ -5,7 +5,7 @@ namespace WebForum.BLL.Models
 {
     public class Post
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public DateTime PostDate { get; set; }
 
