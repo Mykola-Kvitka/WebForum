@@ -34,7 +34,7 @@ namespace WebForum.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserEntity user = new UserEntity { Email = model.Email, UserName = model.Email };
+                UserEntity user = new UserEntity { Email = model.Email, UserName = model.Name + " " + model.Surname };
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

@@ -8,6 +8,7 @@ namespace WebForum.PL.ViewModels
 {
     public class TopicViewModel
     {
+        public Guid Id { get; set; }
         public string TopicName { get; set; }
 
         public string Description { get; set; }

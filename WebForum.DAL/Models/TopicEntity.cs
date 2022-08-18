@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebForum.DAL.Models
 {
     public class TopicEntity
     {
         [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
+
         [MaxLength(64)]
         public string TopicName { get; set; }
 

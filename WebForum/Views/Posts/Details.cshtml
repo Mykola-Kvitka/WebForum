@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model WebForum.PL.ViewModels.PostDetailViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Post title: @Model.Posts.Article</h5>
+        <img class="rounded mx-auto d-block" width="800" height="400" src="~/@Model.Posts.ImagePath">
+    </div>
+
+
+
+    <ul class="list-group list-group-flush">
+        <li class="card-text"> @Model.Posts.Text</li>
+    </ul>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Post date: @Model.Posts.PostDate</li>
+    </ul>
+    <ul class="list-group list-group-flush">
+
+        @if (User.IsInRole("admin"))
+        {
+            <li class="list-group-item activity-add-items-list">
+                <a href="~/posts/delete/@Model.Posts.Id">Detele post</a>
+            </li>
+        }
+    </ul>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+<button class="btn btn-primary" onclick="showHideNewCommentForm('newCommentForm')">Add a new comment</button>
+<form style="display: none;" id="newCommentForm" method="post" action="~/post/@Model.Posts.Id/newcomment">
+    <input class="form-control" name="CommentBody" placeholder="Input your comment..." />
+    <input type="submit" class="btn btn-success" value="Add" />
+</form>
+}
+<div id="comments-container">
+    @foreach (var comm in Model.Comments)
+    { 
+    <div class="card">
+        <div id="@comm.Id" class="card-body">
+            <h5 class="card-title">@comm.UserName</h5>
+            <p class="card-text">
+                @if (comm.CommentsChildren.ToList().Count() != 0)
+                {
+                    <a href="#@comm.CommentParent">@comm.AuthorOfParent ,</a>}
+                @Html.Raw(comm.CommentBody)
+            </p>
+        </div>
+        <div class="card-body">
+            <div class="reply-container">
+                <button class="btn btn-primary" onclick="showHideReplyForm(this)">Reply</button>
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    <form id="replyForm" style="display: none;" method="post" action="~/post/@Model.Posts.Id/newcomment">
+                        <input type="hidden" name="CommentParent" value="@comm.Id" />
+                        <textarea rows="3" class="form-control" required name="CommentBody" placeholder="Input your reply..."></textarea>
+                        <input type="submit" value="Add" class="btn btn-success" />
+                    </form>
+                }
+            </div>
+            <div class="reply-container">
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="reply-container">
+                        <form method="post" action="~/comment/delete/@comm.Id">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this comment?')">Delete</button>
+                        </form>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+    }
+</div>
+

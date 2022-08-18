@@ -27,6 +27,9 @@ namespace WebForum.BLL.Services
         {
             var requestEntity = _mapper.Map<Comment, CommentEntity>(request);
 
+            requestEntity.Id = Guid.NewGuid();
+            requestEntity.CommentDate = DateTime.Now;
+
             await _unitOfWork.Comments.CreateAsync(requestEntity);
         }
 
@@ -36,13 +39,12 @@ namespace WebForum.BLL.Services
 
         }
 
-        public async Task<List<Comment>> FindAsync(Expression<Func<Comment, bool>> predicate)
+        public async Task<IEnumerable<Comment>> FindAsync(Expression<Func<CommentEntity, bool>> predicate)
         {
-            var requestEntity = _mapper.Map<Expression<Func<Comment, bool>>, Expression<Func<CommentEntity, bool>>>(predicate);
 
-            var replay = await _unitOfWork.Comments.FindAsync(requestEntity);
+            var replay = await _unitOfWork.Comments.FindAsync(predicate);
 
-            return _mapper.Map <List<CommentEntity> , List<Comment>>(replay);
+            return _mapper.Map <IEnumerable<CommentEntity> , IEnumerable<Comment>>(replay);
         }
 
         public async Task<int> GetCountAsync()

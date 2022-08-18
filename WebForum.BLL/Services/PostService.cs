@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WebForum.BLL.Helpers;
 using WebForum.BLL.Interfaces;
 using WebForum.BLL.Models;
 using WebForum.DAL.Interfaces;
@@ -23,14 +25,24 @@ namespace WebForum.BLL.Services
             _mapper = mapper;
         }
 
-        public Task CreateAsync(Post request)
+        public async Task CreateAsync(Post request)
         {
-            throw new NotImplementedException();
+            var requestEntity = _mapper.Map<Post, PostEntity>(request);
+
+            if (request.Image != null)
+            {
+                requestEntity.ImagePath = ImageSaveHelper.SaveImageAndGeneratePath(request.Image, ImagePath);
+            }
+
+            await _unitOfWork.Posts.CreateAsync(requestEntity);
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var request = await GetAsync(id);
+            ImageSaveHelper.DeleteImage(request.ImagePath);
+
+            await _unitOfWork.Posts.DeleteAsync(id);
         }
 
         public async Task<IEnumerable<Post>> GetAllAsync()
@@ -40,24 +52,45 @@ namespace WebForum.BLL.Services
             return _mapper.Map<IEnumerable<PostEntity>, IEnumerable<Post>>(post);
         }
 
-        public Task<Post> GetAsync(Guid id)
+        public async Task<Post> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _unitOfWork.Posts.GetAsync(id);
+
+            return _mapper.Map<PostEntity, Post>(result);
         }
 
-        public Task<int> GetCountAsync()
+        public async Task<int> GetCountAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Posts.GetCountAsync();
         }
 
-        public Task<IEnumerable<Post>> GetPagedAsync(int page = 1, int pageSize = 15)
+        public async Task<IEnumerable<Post>> GetPagedAsync(int page = 1, int pageSize = 15)
         {
-            throw new NotImplementedException();
+            var topic = await _unitOfWork.Posts.GetPagedAsync(page, pageSize);
+
+            return _mapper.Map<IEnumerable<PostEntity>, IEnumerable<Post>>(topic);
         }
 
-        public Task UpdateAsync(Post request)
+        public async Task UpdateAsync(Post request)
         {
-            throw new NotImplementedException();
+            var requestEntity = _mapper.Map<Post, PostEntity>(request);
+
+            if (request.Image != null)
+            {
+                ImageSaveHelper.DeleteImage(requestEntity.ImagePath);
+                requestEntity.ImagePath = ImageSaveHelper.SaveImageAndGeneratePath(request.Image, ImagePath);
+            }
+
+            await _unitOfWork.Posts.UpdateAsync(requestEntity);
         }
+
+        public async Task<IEnumerable<Post>> FindAsync(Expression<Func<PostEntity, bool>> predicate)
+        {
+
+            var replay = await _unitOfWork.Posts.FindAsync(predicate);
+
+            return _mapper.Map<List<PostEntity>, List<Post>>(replay);
+        }
+
     }
 }

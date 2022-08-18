@@ -13,18 +13,24 @@ namespace WebForum.PL.ViewModels
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Год рождения")]
-        public int Year { get; set; }
+        [Display(Name = "First name")]
+        [MaxLength(32)]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Last name")]
+        [MaxLength(32)]
+        public string Surname { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [Compare("Password", ErrorMessage = "Passwords don`t match")]
         [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
+        [Display(Name = "Confirm password")]
         public string PasswordConfirm { get; set; }
     }
 }

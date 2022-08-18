@@ -5,15 +5,15 @@ namespace WebForum.PL.ViewModels
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Електронна пошта")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Запам'ятати вхід?")]
+        [Display(Name = "Remember login?")]
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }

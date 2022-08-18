@@ -7,6 +7,7 @@ namespace WebForum.DAL.Models
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid TopicId { get; set; }
 
         public DateTime PostDate { get; set; }
 

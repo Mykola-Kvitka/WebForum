@@ -9,16 +9,39 @@
     <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <h5 class="card-title">Posts:</h5>
-                <div class="top-activities-bar">
-                    @foreach (var item in Model)
+                <h5 class="card-title">Topics:</h5>
+
+                @if (User.IsInRole("admin"))
+                {
+                <div class="d-flex justify-content-start aligns-items-center">
+                    <div>
+                        <a asp-controller="Admin" asp-action="CreateTopic" class="btn btn-primary">Add topic</a>
+                    </div>
+                </div>}
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                    @foreach (var mod in Model)
                     {
-        <a href="~/topics/@item.TopicName" class="card bg-dark text-white top-activities-bar__item">
-            <img src="~/@item.ImagePath" class="card-img">
-            <div class="card-img-overlay">
-                <h5 class="card-title">@item.TopicName</h5>
+        <div class="col">
+            <div class="card shadow-sm">
+                <img class="bd-placeholder-img card-img-top" width="100" height="225" src="~/@mod.ImagePath" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"></rect>
+                <div class="card-body">
+                    <h3>@mod.TopicName</h3>
+
+                    <p class="card-text">
+                        @mod.Description
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="~/topic/detail/@mod.Id" type="button" class="btn btn-sm btn-outline-secondary">See</a>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-        </a>}
+        </div>}
                 </div>
             </li>
         </ul>

@@ -5,13 +5,14 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WebForum.BLL.Models;
+using WebForum.DAL.Models;
 
 namespace WebForum.BLL.Interfaces
 {
     public interface ICommentService
     {
         Task CreateAsync(Comment request);
-        Task<List<Comment>> FindAsync(Expression<Func<Comment, Boolean>> predicate);
+        Task<IEnumerable<Comment>> FindAsync(Expression<Func<CommentEntity, Boolean>> predicate);
         Task<int> GetCountAsync();
         Task DeleteAsync(Guid id);
 

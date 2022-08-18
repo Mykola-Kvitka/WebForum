@@ -7,6 +7,8 @@ namespace WebForum.BLL.Models
     {
         public Guid Id { get; set; }
 
+        public Guid TopicId { get; set; }
+
         public DateTime PostDate { get; set; }
 
         public string Article { get; set; }

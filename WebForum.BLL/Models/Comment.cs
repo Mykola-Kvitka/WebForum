@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebForum.BLL.Models
 {
     public class Comment
     {
+        [Key]
         public Guid Id { get; set; } 
 
         public Guid PostId { get; set; }
@@ -15,6 +18,8 @@ namespace WebForum.BLL.Models
         public DateTime CommentDate { get; set; }
 
         public Guid CommentParent { get; set; }
+
+        public IEnumerable<Comment> CommentsChildren { get; set; }
 
     }
 }

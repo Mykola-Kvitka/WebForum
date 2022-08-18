@@ -1,0 +1,32 @@
+﻿@using System.Diagnostics.CodeAnalysis
+@model WebForum.PL.ViewModels.PostViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<div>
+    <h1>Add Post</h1>
+    <form method="post" asp-action="CreatePost" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <input asp-for="TopicId" readonly hidden />
+        </div>
+
+        <div>
+            <label class="form-label" asp-for="Article"></label>
+            <input class="form-control" required type="text" name="Article" asp-for="Article" />
+        </div>
+
+        <div>
+            <label class="form-label" asp-for="Text"></label>
+            <input class="form-control" required type="text" name="Text" asp-for="Text" />
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Upload image:</label>
+            <input class="form-control" name="Image" type="file" id="formFile">
+        </div>
+
+
+        <div>
+            <input type="submit" class="btn btn-primary" value="Add" />
+        </div>
+    </form>
+</div>
